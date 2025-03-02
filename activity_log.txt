@@ -1,0 +1,7 @@
+Created user: khem
+Granted ROOM access to user khem for room Office
+Granted FLOOR access to user khem for floor Low Floor
+Granted FLOOR access to user khem for floor Low Floor
+Granted FLOOR access to user khem for floor Medium Floor
+Extended ROOM card for user khem (room Office) by 30 min
+User khem accessed room Office successfully.
