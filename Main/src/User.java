@@ -1,22 +1,35 @@
-class User {
-    private String name;
-    private Keycard keycard;
+public class User {
+    private String username;
+    private String password; // เก็บเป็นรหัสผ่านที่เข้ารหัสไว้ได้
 
-
-    public User(String name, Keycard keycard) {
-        this.name = name;
-        this.keycard = keycard;
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return username.equals(user.username);
+    }
 
-    public Keycard getKeycard() {
-        return keycard;
+    @Override
+    public int hashCode() {
+        return username.hashCode();
     }
 }
-
-

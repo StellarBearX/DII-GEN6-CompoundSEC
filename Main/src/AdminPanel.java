@@ -1,76 +1,68 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Map;
-import java.util.HashMap;
-class AdminPanel {
-    private Admin admin;
-    private JFrame frame;
-    private JTextArea userList;
 
+public class AdminPanel extends JPanel {
+    private JFrame parentFrame;
+    private CardLayout cardLayout;
+    private JPanel cardPanel;
+    private LogPanel logPanel;
 
-    public AdminPanel(Admin admin) {
-        this.admin = admin;
-        frame = new JFrame("Admin Panel");
-        frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new BorderLayout());
-
-
-        userList = new JTextArea();
-        refreshUserList();
-        frame.add(new JScrollPane(userList), BorderLayout.CENTER);
-
-
-        JPanel panel = new JPanel();
-        JButton addButton = new JButton("Add User");
-        JButton removeButton = new JButton("Remove User");
-        JButton changeAccessButton = new JButton("Change Access");
-
-
-        addButton.addActionListener(e -> addUser());
-        removeButton.addActionListener(e -> removeUser());
-        changeAccessButton.addActionListener(e -> changeAccess());
-
-
-        panel.add(addButton);
-        panel.add(removeButton);
-        panel.add(changeAccessButton);
-        frame.add(panel, BorderLayout.SOUTH);
-
-
-        frame.setVisible(true);
+    public AdminPanel(JFrame frame) {
+        this.parentFrame = frame;
+        initialize();
     }
 
+    private void initialize() {
+        setLayout(new BorderLayout());
 
-    private void refreshUserList() {
-        userList.setText("User Access List:\n");
-        for (Map.Entry<String, Integer> entry : admin.getUserAccessControl().entrySet()) {
-            userList.append("User: " + entry.getKey() + " - Access Level: " + entry.getValue() + "\n");
-        }
-    }
+        JPanel navBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JButton btnCreateUser = new JButton("Create User");
+        JButton btnUserAccess = new JButton("User Access");
+        JButton btnFloorManagement = new JButton("Floor Management");
+        JButton btnRoomManagement = new JButton("Room Management");
+        JButton btnRoomAccess = new JButton("Room Access");
+        JButton btnLog = new JButton("Log");
+        JButton btnLogout = new JButton("Logout");
+        JButton btnCredentialRecord = new JButton("Credential Record");
+
+        navBar.add(btnCreateUser);
+        navBar.add(btnUserAccess);
+        navBar.add(btnFloorManagement);
+        navBar.add(btnRoomManagement);
+        navBar.add(btnRoomAccess);
+        navBar.add(btnCredentialRecord);
+        navBar.add(btnLog);
+        navBar.add(btnLogout);
+
+        add(navBar, BorderLayout.NORTH);
+
+        logPanel = new LogPanel();
+
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        cardPanel.add(new CreateUserPanel(logPanel), "CreateUser");
+        cardPanel.add(new UserAccessPanel(logPanel), "UserAccess");
+        cardPanel.add(new FloorManagementPanel(logPanel), "FloorManagement");
+        cardPanel.add(new RoomManagementPanel(logPanel), "RoomManagement");
+        cardPanel.add(new RoomAccessPanel(), "RoomAccess");
+        CredentialRecordPanel credentialRecordPanel = new CredentialRecordPanel();
+        cardPanel.add(credentialRecordPanel, "CredentialRecord");
+        cardPanel.add(logPanel, "Log");
 
 
-    private void addUser() {
-        String name = JOptionPane.showInputDialog("Enter User Name:");
-        int level = Integer.parseInt(JOptionPane.showInputDialog("Enter Access Level:"));
-        admin.getUserAccessControl().put(name, level);
-        refreshUserList();
-    }
+        add(cardPanel, BorderLayout.CENTER);
 
-
-    private void removeUser() {
-        String name = JOptionPane.showInputDialog("Enter User Name to Remove:");
-        admin.getUserAccessControl().remove(name);
-        refreshUserList();
-    }
-
-
-    private void changeAccess() {
-        String name = JOptionPane.showInputDialog("Enter User Name:");
-        int level = Integer.parseInt(JOptionPane.showInputDialog("Enter New Access Level:"));
-        admin.getUserAccessControl().put(name, level);
-        refreshUserList();
+        btnCreateUser.addActionListener(e -> cardLayout.show(cardPanel, "CreateUser"));
+        btnUserAccess.addActionListener(e -> cardLayout.show(cardPanel, "UserAccess"));
+        btnFloorManagement.addActionListener(e -> cardLayout.show(cardPanel, "FloorManagement"));
+        btnRoomManagement.addActionListener(e -> cardLayout.show(cardPanel, "RoomManagement"));
+        btnRoomAccess.addActionListener(e -> cardLayout.show(cardPanel, "RoomAccess"));
+        btnCredentialRecord.addActionListener(e -> cardLayout.show(cardPanel, "CredentialRecord"));
+        btnLog.addActionListener(e -> cardLayout.show(cardPanel, "Log"));
+        btnLogout.addActionListener(e -> {
+            parentFrame.setContentPane(new LoginPanel(parentFrame));
+            parentFrame.revalidate();
+        });
     }
 }
-
-
