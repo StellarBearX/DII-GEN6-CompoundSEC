@@ -20,3 +20,4 @@ The importances of the project is allow student to do
 - Card generation or modification will be logged with necessary info
 3. Card management 
 - Add, modify, revoke permission of each card
+![Class Diagram drawio](https://github.com/user-attachments/assets/5b9887a2-abef-4d11-8f37-4e9753cbb5ad)
